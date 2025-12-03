@@ -1,31 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import Header from '@/components/Header';
 import DonationForm from '@/components/DonationForm';
-import AdminLink from '@/components/AdminLink';
+import SupportPoints from '@/components/SupportPoints';
 
 export default function Home() {
   return (
-    <main 
-      className="min-h-screen bg-cream-light relative bg-pattern" 
-      style={{
-        backgroundImage: 'url(/pa.jpg), linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(245, 245, 220, 0.1) 100%)',
-        backgroundSize: 'cover, auto',
-        backgroundPosition: 'center, center',
-        backgroundRepeat: 'no-repeat, repeat',
-        backgroundAttachment: 'fixed, scroll'
-      }}
-    >
-      {/* Overlay for better readability - darker */}
-      <div className="absolute inset-0 bg-black/50"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60"></div>
-      
-      {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center py-4">
-        <AdminLink />
-        <DonationForm />
+    <main className="min-h-screen">
+      <Header />
+      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+        {/* Left Side - Support Points */}
+        <div className="bg-amber-900 p-8 lg:p-12 flex items-center">
+          <div className="w-full">
+            <SupportPoints />
+          </div>
+        </div>
+        
+        {/* Right Side - White Panel with Form */}
+        <div className="bg-white p-4 lg:p-6 flex items-center justify-center">
+          <div className="w-full max-w-4xl">
+            <DonationForm />
+          </div>
+        </div>
       </div>
     </main>
   );
 }
-

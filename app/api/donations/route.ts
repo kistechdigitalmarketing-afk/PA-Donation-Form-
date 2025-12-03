@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!donation.fullName || !donation.email || !donation.phoneNumber || 
-        !donation.donationAmount || !donation.paymentMethod || !donation.confirmationMessage) {
+        !donation.paymentMethod || !donation.confirmationMessage) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }

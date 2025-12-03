@@ -2,7 +2,7 @@ export interface DonationFormData {
   fullName: string;
   email: string;
   phoneNumber: string;
-  donationAmount: number;
+  donationAmount?: number;
   paymentMethod: 'mpesa' | 'bank' | '';
   confirmationMessage: string;
   submittedAt: string;
