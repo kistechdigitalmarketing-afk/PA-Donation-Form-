@@ -1,8 +1,10 @@
 import { DonationFormData } from '@/types';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 
-const DATA_DIR = path.join(process.cwd(), 'data');
+// Use /tmp directory for Vercel compatibility (writable in serverless functions)
+const DATA_DIR = process.env.VERCEL ? path.join(os.tmpdir(), 'pa-donations') : path.join(process.cwd(), 'data');
 const DONATIONS_FILE = path.join(DATA_DIR, 'donations.json');
 
 // Ensure data directory exists
@@ -52,8 +54,15 @@ export function getDonationsServer(): DonationFormData[] {
 }
 
 export function saveDonationServer(donation: DonationFormData): void {
-  const donations = getDonationsServer();
-  donations.push(donation);
-  fs.writeFileSync(DONATIONS_FILE, JSON.stringify(donations, null, 2));
+  try {
+    const donations = getDonationsServer();
+    donations.push(donation);
+    fs.writeFileSync(DONATIONS_FILE, JSON.stringify(donations, null, 2));
+  } catch (error) {
+    console.error('Error saving donation to file system:', error);
+    // On Vercel, file writes to /tmp work but don't persist between invocations
+    // For production, consider using a database (PostgreSQL, MongoDB, etc.)
+    throw error;
+  }
 }
 

@@ -40,24 +40,6 @@ export async function GET(request: NextRequest) {
     const { getDonationsServer } = await import('@/lib/storage');
     const donations = getDonationsServer();
     
-    // Check for admin authentication
-    const token = request.cookies.get('adminToken')?.value;
-    if (!token) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
-    const { verifyToken } = await import('@/lib/auth');
-    const decoded = verifyToken(token);
-    if (!decoded || decoded.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
     return NextResponse.json({ donations }, { status: 200 });
   } catch (error) {
     console.error('Error fetching donations:', error);

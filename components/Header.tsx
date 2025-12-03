@@ -3,7 +3,7 @@
 export default function Header() {
   return (
     <header 
-      className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden"
+      className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center overflow-hidden"
     >
       {/* Background image with blur */}
       <div 
@@ -22,8 +22,8 @@ export default function Header() {
       <div className="absolute inset-0 bg-[#8B4513]/80"></div>
       
       {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+      <div className="relative z-10 text-center px-3 sm:px-4 md:px-6 max-w-4xl mx-auto">
+        <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
           Be part of the transformation by supporting{' '}
           <span className="text-[#FFA500]">PA</span> ministry
         </h1>

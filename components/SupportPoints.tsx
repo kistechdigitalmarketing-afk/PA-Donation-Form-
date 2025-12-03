@@ -104,40 +104,40 @@ export default function SupportPoints() {
   }, [donationImpacts.length]);
 
   return (
-    <div className="w-full space-y-10">
+    <div className="w-full space-y-6 sm:space-y-8 md:space-y-10">
       <div>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-10 leading-tight">
+        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-white mb-6 sm:mb-8 md:mb-10 leading-tight">
           Your support bolstered our holistic transformation work in rural Africa supporting;
         </h2>
-        <ul className="space-y-6">
+        <ul className="space-y-4 sm:space-y-5 md:space-y-6">
           {points.map((point, index) => (
-            <li key={index} className="flex items-start gap-5 group">
-              <div className="mt-1 flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
+            <li key={index} className="flex items-start gap-3 sm:gap-4 md:gap-5 group">
+              <div className="mt-0.5 sm:mt-1 flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
                 {getIcon(point.icon)}
               </div>
-              <span className="text-white text-lg md:text-xl leading-relaxed">{point.text}</span>
+              <span className="text-white text-base sm:text-lg md:text-xl leading-relaxed">{point.text}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="mt-16 pt-10 border-t-2 border-white/30">
-        <h3 className="text-xl md:text-2xl font-bold text-white mb-8">
+      <div className="mt-8 sm:mt-12 md:mt-16 pt-6 sm:pt-8 md:pt-10 border-t-2 border-white/30">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6 md:mb-8">
           Your donation helps support:
         </h3>
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border-2 border-white/20 shadow-lg min-h-[160px] flex items-center hover:bg-white/15 transition-colors duration-300">
-          <div className="flex items-start gap-6 w-full">
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 border-2 border-white/20 shadow-lg min-h-[120px] sm:min-h-[140px] md:min-h-[160px] flex items-center hover:bg-white/15 transition-colors duration-300">
+          <div className="flex items-start gap-3 sm:gap-4 md:gap-6 w-full">
             <div className="mt-0.5 flex-shrink-0">
-              <div className="w-8 h-8 text-[#FFA500] flex items-center">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-[#FFA500] flex items-center">
                 {getIcon(donationImpacts[currentImpact].icon)}
               </div>
             </div>
-            <p className={`text-white text-lg md:text-xl leading-relaxed font-medium transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'}`}>
+            <p className={`text-white text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-medium transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'}`}>
               {donationImpacts[currentImpact].text}
             </p>
           </div>
         </div>
-        <p className="text-white/90 text-sm mt-6 text-center font-medium">
+        <p className="text-white/90 text-xs sm:text-sm mt-4 sm:mt-5 md:mt-6 text-center font-medium">
           All amounts in Kenyan Shillings (KES)
         </p>
       </div>

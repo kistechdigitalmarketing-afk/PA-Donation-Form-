@@ -10,14 +10,14 @@ export default function Home() {
       <Header />
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
         {/* Left Side - Support Points */}
-        <div className="bg-amber-900 p-8 lg:p-12 flex items-center">
+        <div className="bg-amber-900 p-4 sm:p-6 md:p-8 lg:p-12 flex items-center">
           <div className="w-full">
             <SupportPoints />
           </div>
         </div>
         
         {/* Right Side - White Panel with Form */}
-        <div className="bg-white p-4 lg:p-6 flex items-center justify-center">
+        <div className="bg-white p-3 sm:p-4 md:p-6 flex items-center justify-center">
           <div className="w-full max-w-4xl">
             <DonationForm />
           </div>
