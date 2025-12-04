@@ -6,20 +6,20 @@ import SupportPoints from '@/components/SupportPoints';
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="w-full">
       <Header />
-      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-        {/* Left Side - Support Points */}
-        <div className="bg-amber-900 p-4 sm:p-6 md:p-8 lg:p-12 flex items-center">
-          <div className="w-full">
-            <SupportPoints />
-          </div>
-        </div>
-        
-        {/* Right Side - White Panel with Form */}
+      <div className="flex flex-col">
+        {/* Form Section */}
         <div className="bg-white p-3 sm:p-4 md:p-6 flex items-center justify-center">
           <div className="w-full max-w-4xl">
             <DonationForm />
+          </div>
+        </div>
+        
+        {/* Support Points Section - Below Form */}
+        <div className="bg-amber-900 p-4 sm:p-6 md:p-8 lg:p-12 flex items-center">
+          <div className="w-full">
+            <SupportPoints />
           </div>
         </div>
       </div>

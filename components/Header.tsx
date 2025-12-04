@@ -3,7 +3,7 @@
 export default function Header() {
   return (
     <header 
-      className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center overflow-hidden"
+      className="relative w-full h-[120px] sm:h-[140px] md:h-[160px] flex items-center justify-center overflow-hidden"
     >
       {/* Background image with blur */}
       <div 
@@ -23,7 +23,7 @@ export default function Header() {
       
       {/* Content */}
       <div className="relative z-10 text-center px-3 sm:px-4 md:px-6 max-w-4xl mx-auto">
-        <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
+        <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
           Be part of the transformation by supporting{' '}
           <span className="text-[#FFA500]">PA</span> ministry
         </h1>
