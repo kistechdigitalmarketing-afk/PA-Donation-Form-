@@ -396,8 +396,8 @@ export default function DonationForm() {
           <div className="mt-4 sm:mt-5 md:mt-6 pt-3 sm:pt-4">
             <p className="text-sm sm:text-base text-gray-600 text-center leading-relaxed">
               If you face any issue, you can reach out to us on{' '}
-              <a href="mailto:karibu@possibilitiesafrica.org" className="text-primary hover:underline break-all">
-                karibu@possibilitiesafrica.org
+              <a href="mailto:inquiries@possibilitiesafrica.org" className="text-primary hover:underline break-all">
+                inquiries@possibilitiesafrica.org
               </a>
               {' '}or call us at{' '}
               <a href="tel:+254721238198" className="text-primary hover:underline">
