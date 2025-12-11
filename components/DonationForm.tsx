@@ -14,6 +14,9 @@ export default function DonationForm() {
 
   const [paymentMethod, setPaymentMethod] = useState<'mpesa' | 'bank' | ''>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successName, setSuccessName] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const updateFormData = (data: Partial<DonationFormData>) => {
     setFormData(prev => ({ ...prev, ...data }));
@@ -26,7 +29,7 @@ export default function DonationForm() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert('Copied to clipboard!');
+    // You can add a toast notification here if needed
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,11 +37,12 @@ export default function DonationForm() {
     
     // Validate form data
     if (!formData.fullName || !formData.email || !formData.phoneNumber || 
-        !formData.paymentMethod || !formData.confirmationMessage) {
-      alert('Please fill in all required fields before submitting.');
+        !formData.paymentMethod) {
+      setErrorMessage('Please fill in all required fields before submitting.');
       return;
     }
 
+    setErrorMessage('');
     setIsSubmitting(true);
 
     const donation: DonationFormData = {
@@ -61,7 +65,9 @@ export default function DonationForm() {
       });
 
       if (response.ok) {
-        alert('Thank you for your donation! Your submission has been received.');
+        // Show success message with name
+        setSuccessName(formData.fullName || '');
+        setShowSuccess(true);
         // Reset form
         setFormData({
           fullName: '',
@@ -71,23 +77,78 @@ export default function DonationForm() {
           confirmationMessage: '',
         });
         setPaymentMethod('');
+        // Scroll to top to show success message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         const data = await response.json();
-        alert(data.error || 'There was an error submitting your donation. Please try again.');
+        setErrorMessage(data.error || 'There was an error submitting your donation. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting donation:', error);
-      alert('There was an error submitting your donation. Please try again.');
+      setErrorMessage('There was an error submitting your donation. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const isFormValid = formData.fullName && formData.email && formData.phoneNumber && 
-                     formData.paymentMethod && formData.confirmationMessage;
+                     formData.paymentMethod;
 
   return (
     <div className="w-full">
+      {/* Success Message */}
+      {showSuccess && (
+        <div className="mb-6 bg-green-50 border-l-4 border-green-500 rounded-lg p-6 shadow-lg animate-fade-in">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-6 w-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="ml-3 flex-1">
+              <h3 className="text-xl sm:text-2xl font-bold text-green-800 mb-2">
+                Thank you for your support, {successName}!
+              </h3>
+              <p className="text-base sm:text-lg text-green-700">
+                Your donation submission has been received successfully. We appreciate your generosity!
+              </p>
+            </div>
+            <button
+              onClick={() => setShowSuccess(false)}
+              className="ml-4 flex-shrink-0 text-green-500 hover:text-green-700"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {errorMessage && (
+        <div className="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-lg">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-6 w-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-base text-red-700">{errorMessage}</p>
+            </div>
+            <button
+              onClick={() => setErrorMessage('')}
+              className="ml-4 flex-shrink-0 text-red-500 hover:text-red-700"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="bg-white rounded-lg sm:rounded-xl shadow-xl overflow-hidden border border-gray-100">
         {/* Form Content */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-5 md:space-y-6">
@@ -137,7 +198,6 @@ export default function DonationForm() {
               <div>
                 <label htmlFor="phoneNumber" className="block text-sm sm:text-base font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Phone Number <span className="text-red-500">*</span>
-                  <span className="text-xs sm:text-sm text-gray-500 ml-1">(Required for M-Pesa)</span>
                 </label>
                 <input
                   type="tel"
@@ -178,6 +238,14 @@ export default function DonationForm() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
+                    <div className="mt-1 flex-shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={paymentMethod === 'mpesa'}
+                        onChange={() => handlePaymentMethodChange('mpesa')}
+                        className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2"
+                      />
+                    </div>
                     <div className={`p-2 rounded-lg flex-shrink-0 ${
                       paymentMethod === 'mpesa' ? 'bg-primary/20' : 'bg-gray-100'
                     }`}>
@@ -194,7 +262,7 @@ export default function DonationForm() {
                       <div className="absolute top-3 right-3 flex-shrink-0">
                         <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                           <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
                         </div>
                       </div>
@@ -213,6 +281,14 @@ export default function DonationForm() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
+                    <div className="mt-1 flex-shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={paymentMethod === 'bank'}
+                        onChange={() => handlePaymentMethodChange('bank')}
+                        className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2"
+                      />
+                    </div>
                     <div className={`p-2 rounded-lg flex-shrink-0 ${
                       paymentMethod === 'bank' ? 'bg-primary/20' : 'bg-gray-100'
                     }`}>
@@ -229,7 +305,7 @@ export default function DonationForm() {
                       <div className="absolute top-3 right-3 flex-shrink-0">
                         <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                           <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
                         </div>
                       </div>
@@ -264,16 +340,10 @@ export default function DonationForm() {
                     </p>
                   </div>
                 </div>
-
-                <div>
-                  <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2">M-Pesa Confirmation Message</h3>
-                  <textarea
-                    value={formData.confirmationMessage || ''}
-                    onChange={(e) => updateFormData({ confirmationMessage: e.target.value })}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary resize-none h-20 sm:h-24 transition-all duration-200"
-                    placeholder="Paste your complete M-Pesa confirmation message here..."
-                    required
-                  />
+                <div className="bg-green-50 border-l-4 border-green-400 rounded-lg p-3 sm:p-4">
+                  <p className="text-sm sm:text-base text-gray-800">
+                    Thank you for your generosity <span className="font-semibold">( please submit the form after making payment )</span>
+                  </p>
                 </div>
               </div>
             )}
@@ -289,16 +359,10 @@ export default function DonationForm() {
                     <p><strong>Account Number:</strong> 2046221209</p>
                   </div>
                 </div>
-
-                <div>
-                  <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2">Bank Transfer Confirmation</h3>
-                  <textarea
-                    value={formData.confirmationMessage || ''}
-                    onChange={(e) => updateFormData({ confirmationMessage: e.target.value })}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary resize-none h-20 sm:h-24 transition-all duration-200"
-                    placeholder="Paste your bank transfer confirmation message or provide transfer details here..."
-                    required
-                  />
+                <div className="bg-green-50 border-l-4 border-green-400 rounded-lg p-3 sm:p-4">
+                  <p className="text-sm sm:text-base text-gray-800">
+                    Thank you for your generosity <span className="font-semibold">( please submit the form after making payment )</span>
+                  </p>
                 </div>
               </div>
             )}
