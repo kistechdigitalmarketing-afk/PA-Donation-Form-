@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🔑 REQUIRED for iframe embedding */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -14,6 +20,15 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+/* Hide scrollbar but keep scroll */
+.flex-1 {
+  scrollbar-width: none; /* Firefox */
+}
+
+.flex-1::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 
 /* Background image fallback pattern */
@@ -30,4 +45,3 @@ body {
       );
   }
 }
-
